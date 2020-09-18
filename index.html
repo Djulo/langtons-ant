@@ -1,72 +1,63 @@
 <!DOCTYPE html>
 <html lang="en-US">
 
-<head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-  <title>Langton's Ant</title>
-  <meta name="description" content="A customizable implementation of Langton's Ant" />
-  <meta property="og:title" content="Langton's Ant" />
-  <meta property="og:description" content="A customizable implementation of Langton's Ant" />
-  <meta property="og:type" content="article" />
-  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-
-  <link rel="stylesheet" href="ant.css" type="text/css" />
-  <script src="simulation.js"></script>
+  <head>
+    <title>Langton's Ant Simulator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/p5.min.js" integrity="sha512-WIklPM6qPCIp6d3fSSr90j+1unQHUOoWDS4sdTiR8gxUTnyZ8S2Mr8e10sKKJ/bhJgpAa/qG068RDkg6fIlNFA==" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="ant.css">
+    <script src="antwalk.js"></script>
+    <script src="board.js"></script>
+    <script src="sketch.js"></script>
 </head>
 
 <body>
-  <!-- Main -->
-  <main id="main">
-    <h1 class="title">LANGTON'S ANT</h1>
-
-    <div id="main-inputs">
-      <div>
-        <label for="height">Height</label>
-        <input type="number" id="height" value="100" />
-      </div>
-
-      <div>
-        <label for="width">Width</label>
-        <input type="number" id="width" value="100" />
-      </div>
-
-      <div>
-        <label for="square-size">Square size</label>
-        <input type="number" id="square-size" value="4" />
-      </div>
-
-      <div>
-        <label for="wrap">Wrap</label>
-        <input type="checkbox" id="wrap" />
-      </div>
-
-      <div id="button-holder">
-        <button id="start">Start</button>
-        <button id="pause" style="display: none">Pause</button>
-        <button id="resume" style="display: none">Resume</button>
-        <button id="reset">Reset</button>
-      </div>
-    </div>
-
-    <div id="canvas-holder" width="100%"></div>
-
-    <p id="iteration"></p>
-
-    <div id="input-container">
-      <div id="rule-box" class="box">
-        <h2>Rules</h2>
-        <div id="rules"></div>
-        <button id="add-rule">Add Rule</button>
-      </div>
-
-      <div id="ant-box">
-        <div id="ants-inner"></div>
-        <div id="ant-header">
-          <button id="add-ant">Add Ant</button>
+    <div id="bg"></div>
+    <h1>Langton's Ant Simulator</h1>
+    
+    <div class="w3-row" >
+        <div class="w3-col" style="width: 53em;">
+            <div id="CanvasHolder"></div>
+            <p id="enlargeinfo">Enlarging grid. This may take some seconds.</p>
+            <p id="enlargewarning">Grid enlargement maximum reached. Ending simulation<br></p>
         </div>
-      </div>
-    </div>
-  </main>
-</body>
+        <div class="w3-rest" style="min-width: 17em">
+            <div id="buttons">
+                <br >
+                <button onclick="pause()" id="pausebutton">Start</button>
+                <button onclick="restart()" id="restartbutton">Restart</button>
+                <button onclick="move()" id="movebutton">Move</button>
+                <p id="speed" style="margin-left: 3em; margin-right: 1em;">Moves per update: 1</p>
+                <button onclick="addSpeed(-100)" id="minusbutton">-100</button>
+                <button onclick="addSpeed(-10)" id="minusbutton">-10</button>
+                <button onclick="addSpeed(-1)" id="minusbutton">-1</button>
+                <button onclick="addSpeed(1)" id="plusbutton">+1</button>
+                <button onclick="addSpeed(10)" id="plusbutton">+10</button>
+                <button onclick="addSpeed(100)" id="plusbutton">+100</button>
 
-</html>
+                <p id="delay" style="margin-left: 3em; margin-right: 1em;">Delay per update: 0</p>
+                <button onclick="addDelay(-10)" id="minusbutton">-10</button>
+                <button onclick="addDelay(-1)" id="minusbutton">-1</button>
+                <button onclick="addDelay(1)" id="plusbutton">+1</button>
+                <button onclick="addDelay(10)" id="plusbutton">+10</button>
+                
+                <p id="counter" style="margin-left: 2em;">Counter: 0</p>
+            </div>
+
+            <div id="inputpattern"></div>
+
+            <div class="patterns">
+              <br>
+              <button onclick="setPattern('LLRR')">Symmetric pattern: LLRR</button><br>
+              <button onclick="setPattern('RLLR')">Symmetric pattern: RLLR</button><br>
+              <button onclick="setPattern('LRRRRRLLR')">Squared pattern: LRRRRRLLR</button><br>
+              <button onclick="setPattern('RRLLLRLLLRRR')">Traingular highway: RRLLLRLLLRRR</button><br>
+              <button onclick="setPattern('LLRRRLRLRLLR')">Convoluted highway: LLRRRLRLRLLR</button><br>
+              <button onclick="setPattern('RFFB')">Pattern: RFFB</button><br>
+              <button onclick="setPattern('RLBF')">Quick highway: RLBF</button><br>
+              <button onclick="setPattern('RRLRR')">Squared pattern: RLRRLRRBF</button><br>     
+            </div>
+        </div>
+    </div>
+    <p id="framerate">-fps</p>
+</body>
